@@ -1,0 +1,144 @@
+<html class="mb-4">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Crime Prediction</title>
+	<meta name="viewport" content="">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+
+
+
+
+	<!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'> -->
+
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/animate.css')}}">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/icomoon.css')}}">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/bootstrap.css')}}">
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/owl.carousel.min.css')}}">
+
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/owl.theme.default.min.css')}}">
+
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/style.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename ='css1/styles.css')}}">
+
+
+	<!-- Modernizr JS -->
+	<script src="{{url_for('static',filename ='js2/modernizr-2.6.2.min.js')}}"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body
+	style="background-image: url('https://images.unsplash.com/photo-1584985598389-3a36cb7aa1c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8b25lJTIwY29sb3J8ZW58MHx8MHx8&w=1000&q=80');">
+	<header>
+		<div class="container text-center">
+			<div class="fh5co-navbar-brand">
+				<!-- <a class="fh5co-logo" href="/">C R I M E P R E D I C T I O N</a> -->
+				<h1> C R I M E P R E D I C T I O N </h1>
+			</div>
+			<nav id="fh5co-main-nav" role="navigation">
+				<ul>
+					<!-- <li><a href="#" class="active">Predict Crime</a></li>
+					<li><a href="/work.html">Crime Analysis</a></li> -->
+					<li><a href="/logout">LOGOUT</a></li>
+					<li><a href="/map">Crime Map</a></li>
+
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="owl-carousel owl-carousel1 owl-carousel-fullwidth fh5co-light-arrow animate-box"
+		data-animate-effect="fadeIn">
+
+	</div>
+
+	<div id="fh5co-intro-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h3>"It's not how many criminal you catch, it's how many crime you prevent."</h3>
+
+				</div>
+			</div>
+		</div>
+	</div><!-- end fh5co-intro-section -->
+	<div align="center">
+		<h1>Predict Crime</h2>
+	</div>
+	<div class="container position-relative px-4 px-lg-5">
+
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div align="center">
+				<form action="{{ url_for('predict') }}" method="POST">
+					<select name="Location" style="min-width: 1270px; height: 45px;;">
+						<option value="" disabled selected>Select Location</option>
+						<option value="ARLINGTON ST">ARLINGTON ST</option>
+						<option value="ALLSTON ST">ALLSTON ST</option>
+						<option value="DEVON ST">DEVON ST</option>
+						<option value="PRESCOTT ST">PRESCOTT ST</option>
+						<option value="DORCHESTER AVE">DORCHESTER AVE</option>
+						<option value="TREMONT ST">TREMONT ST</option>
+						<option value="AVILIA RD">AVILIA RD</option>
+						<option value="FOTTLER RD">FOTTLER RD</option>
+						<option value="HALLET ST">HALLET ST</option>
+						<option value="COLUMBIA RD">COLUMBIA RD</option>
+						<option value="AKRON ST">AKRON ST</option>
+						<option value="HANSFORD ST">HANSFORD ST</option>
+						<option value="HARRISON AVE">HARRISION AVE</option>
+						<option value="MONTCALM AVE">MONTCALM AVE</option>
+						<option value="GREENMOUNT ST">GREENMOUNT ST</option>
+						<option value="PARIS ST">PARIS ST</option>
+						<option value="WASHINGTON ST">WASHINGTON ST</option>
+						<option value="BLCKFORD ST">BLCKFORD ST</option>
+						<option value="MORTAN ST">MORTAN ST</option>
+						<option value="TREEMONT ST">TREEMONT ST</option>
+						<option value="BLUE HILL AVE">BLUE HILL AVE</option>
+					</select>
+					<br>
+					<br>
+					<input type="datetime-local" class="form-control" name="timestamp" step="1" required=""><br>
+					<input type="text" class="form-control" name="" placeholder="Age" required=""><br>
+					<label for="gender"></label>
+					<select name="gender" id="gender" style="min-width: 1270px; height: 45px;;">
+						<option value="" disabled selected>Select Age</option>
+						<option value="volvo">Male</option>
+						<option value="saab">Female</option>
+					</select>
+					<br>
+					<br>
+					<input type="submit" value="Predict" class="btn btn-primary">
+					<input type="reset" value="Reset Data" class="btn btn-primary">
+				</form>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<div id="footer" class="container px-4 px-lg-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 text-center">
+						<p>Copyright 2023 Crime Prtediction TM Rights Reserved.</p>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<!-- jQuery -->
+
+
+</body>
+
+</html>
