@@ -1,47 +1,92 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Login Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="{{url_for('static',filename = 'css/style1.css')}}">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+{% extends "layout.html" %}
 
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<div class="container" onclick="onclick">
-    <main>
-               {% with messages=get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category,message in messages %}
-                        {% if category== 'success' %}
-                          <div class="alert alert-success mb-3" role="alert">{{message}}</div>
-                        {% endif %}
-                        {% if category== 'error' %}
-                          <h2 style="text-align:center"> <div class="alert alert-danger mb-3" role="alert">{{message}}</div></h2>
-                        {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-   <form method="POST" class="login-form" id="login-form" action="/login">
-  <div class="top"></div>
-  <div class="bottom"></div>
-  <div class="center">
-    <h2>Please Sign In</h2>
-    <input type="email" name="email" id = "email" placeholder="email" required="" />
-    <input type="password" name="password" id = "password" placeholder="password" required="" />
-    <div class="form-group form-button">
-    <input type="submit" name="signin" id="signin" class="form-submit-button" value="Log in"/>
-    
+{% block title %}Sign In | Aegis Crime Intelligence{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="glass-card auth-card">
+    <div class="auth-header">
+      <div class="brand-icon" style="margin: 0 auto 1.2rem; width: 50px; height: 50px; font-size: 1.4rem;">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-subtitle">Sign in to access the predictive crime intelligence dashboard</p>
     </div>
-     <a href="/register" class="signup-image-link">Create an account</a>
-     <br>
-     <a href="/" class="signup-image-link">Cancel</a>
-    <h2>&nbsp;</h2>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert {% if category == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+            <i class="fa-solid {% if category == 'success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/login" id="login-form">
+      <div class="form-group">
+        <label for="email" class="form-label"><i class="fa-solid fa-envelope" style="margin-right: 4px;"></i> Email Address</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="name@example.com" required autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label for="password" class="form-label" style="margin-bottom: 0;"><i class="fa-solid fa-key" style="margin-right: 4px;"></i> Password</label>
+          <span style="font-size: 0.8rem; color: var(--text-muted); cursor: pointer;" onclick="togglePassword()">
+            <i class="fa-solid fa-eye" id="eye-icon"></i> Show
+          </span>
+        </div>
+        <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 0.5rem;">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Dashboard
+      </button>
+    </form>
+
+    <!-- Quick Auto-Fill Demo Credentials -->
+    <div class="demo-credentials-pill" onclick="fillDemoCredentials()" title="Click to auto-fill sample credentials">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+        <strong style="color: var(--primary-light);"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick Demo Login</strong>
+        <span style="font-size: 0.75rem; text-decoration: underline;">Click to Fill</span>
+      </div>
+      <div>Email: <code>Sandy@gmail.com</code> | Pass: <code>123456789</code></div>
+    </div>
+
+    <div class="auth-footer">
+      Don't have an account? <a href="/register">Create an account</a>
+    </div>
   </div>
 </div>
-<!-- partial -->
-  <script src='https://codepen.io/banik/pen/3f837b2f0085b5125112fc455941ea94.js'></script>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function fillDemoCredentials() {
+    document.getElementById('email').value = 'Sandy@gmail.com';
+    document.getElementById('password').value = '123456789';
+    // Visual feedback
+    const pill = document.querySelector('.demo-credentials-pill');
+    pill.style.borderColor = 'var(--accent-safe)';
+    pill.style.background = 'rgba(16, 185, 129, 0.15)';
+    setTimeout(() => {
+      pill.style.borderColor = '';
+      pill.style.background = '';
+    }, 1000);
+  }
+
+  function togglePassword() {
+    const pw = document.getElementById('password');
+    const eye = document.getElementById('eye-icon');
+    if (pw.type === 'password') {
+      pw.type = 'text';
+      eye.className = 'fa-solid fa-eye-slash';
+    } else {
+      pw.type = 'password';
+      eye.className = 'fa-solid fa-eye';
+    }
+  }
+</script>
+{% endblock %}
