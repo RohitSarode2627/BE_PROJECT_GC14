@@ -46,7 +46,6 @@ else:
 db = SQLAlchemy(app)
 
 class Register(db.Model):
-    __tablename__ = 'register'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     uname = db.Column(db.String(50), nullable=False)
@@ -56,7 +55,6 @@ class Register(db.Model):
     cpassword = db.Column(db.String(10), nullable=False)
 
 class Contact(db.Model):
-    __tablename__ = 'contact'
     id=db.Column(db.Integer,primary_key=True)
     name=db.Column(db.String(50),nullable=False)
     email=db.Column(db.String(50),nullable=False)
@@ -141,71 +139,59 @@ def predict():
     print('model loaded')
 
     if request.method == 'POST':
-        address = request.form.get('location') or request.form.get('Location')
-        # Default coordinates for Indore, MP (center of the dataset)
-        lat = [22.7196]
-        log = [75.8577]
 
-        if address:
-            try:
-                geolocator = Nominatim(user_agent="PAASBAAN-crime-prediction-master")
-                location = geolocator.geocode(address, timeout=5)
-                if location:
-                    print(location.address)
-                    lat = [location.latitude]
-                    log = [location.longitude]
-            except Exception as e:
-                print("Geocoding notice:", e)
-
-        latlong = pd.DataFrame({'latitude': lat, 'longitude': log})
+        address = request.form.get('location')
+        geolocator = Nominatim(user_agent="PAASBAAN-crime-prediction-master")
+        location = geolocator.geocode(address,timeout=None)
+        print(location.address)
+        lat=[location.latitude]
+        log=[location.longitude]
+        latlong=pd.DataFrame({'latitude':lat,'longitude':log})
         print(latlong)
 
-        DT = request.form.get('timestamp')
-        latlong['timestamp'] = DT
-        data = latlong
+        DT= request.form['timestamp']
+        latlong['timestamp']=DT
+        data=latlong
         cols = data.columns.tolist()
         cols = cols[-1:] + cols[:-1]
         data = data[cols]
 
-        parsed_ts = pd.to_datetime(data['timestamp'].astype(str), errors='coerce')
-        if parsed_ts.isna().any():
-            parsed_ts = pd.to_datetime(data['timestamp'], format='%d/%m/%Y %H:%M:%S', errors='coerce')
-        if parsed_ts.isna().any():
-            parsed_ts = pd.Series([pd.Timestamp.now()])
-
-        iso_week = parsed_ts.dt.isocalendar().week.astype(float)
-        DT_df = pd.DataFrame({
-            "year": parsed_ts.dt.year.astype(float),
-            "month": parsed_ts.dt.month.astype(float),
-            "day": parsed_ts.dt.day.astype(float),
-            "hour": parsed_ts.dt.hour.astype(float),
-            "dayofyear": parsed_ts.dt.dayofyear.astype(float),
-            "week": iso_week,
-            "weekofyear": iso_week,
-            "dayofweek": parsed_ts.dt.dayofweek.astype(float),
-            "weekday": parsed_ts.dt.weekday.astype(float),
-            "quarter": parsed_ts.dt.quarter.astype(float),
-        })
-        data = data.drop('timestamp', axis=1)
-        final = pd.concat([DT_df, data], axis=1)
-        X = final.iloc[:, [1, 2, 3, 4, 6, 10, 11]].values
+        data['timestamp'] = pd.to_datetime(data['timestamp'].astype(str), errors='coerce')
+        data['timestamp'] = pd.to_datetime(data['timestamp'], format = '%d/%m/%Y %H:%M:%S')
+        column_1 = data.iloc[:,0]
+        DT=pd.DataFrame({"year": column_1.dt.year,
+              "month": column_1.dt.month,
+              "day": column_1.dt.day,
+              "hour": column_1.dt.hour,
+              "dayofyear": column_1.dt.dayofyear,
+              "week": column_1.dt.week,
+              "weekofyear": column_1.dt.weekofyear,
+              "dayofweek": column_1.dt.dayofweek,
+              "weekday": column_1.dt.weekday,
+              "quarter": column_1.dt.quarter,
+             })
+        data=data.drop('timestamp',axis=1)
+        final=pd.concat([DT,data],axis=1)
+        X=final.iloc[:,[1,2,3,4,6,10,11]].values
         my_prediction = rfc.predict(X)
         if my_prediction[0][0] == 1:
-            my_prediction = 'Predicted crime : Robbery'
+            my_prediction='Predicted crime : Robbery'
         elif my_prediction[0][1] == 1:
-            my_prediction = 'Predicted crime : Gambling'
+            my_prediction='Predicted crime : Gambling'
         elif my_prediction[0][2] == 1:
-            my_prediction = 'Predicted crime : Accident'
+            my_prediction='Predicted crime : Accident'
         elif my_prediction[0][3] == 1:
-            my_prediction = 'Predicted crime : Violence'
+            my_prediction='Predicted crime : Violence'
         elif my_prediction[0][4] == 1:
-            my_prediction = 'Predicted crime : Murder'
+            my_prediction='Predicted crime : Murder'
         elif my_prediction[0][5] == 1:
-            my_prediction = 'Predicted crime : kidnapping'
+            my_prediction='Predicted crime : kidnapping'
         else:
-            my_prediction = 'Place is safe no crime expected at that timestamp.'
+            my_prediction='Place is safe no crime expected at that timestamp.'
 
-        return render_template('result.html', prediction = my_prediction)
+
+
+    return render_template('result.html', prediction = my_prediction)
 
 @app.route('/work.html')
 def work():
@@ -219,7 +205,7 @@ def map():
 
 @app.route("/logout", methods = ['GET','POST'])
 def logout():
-    session.pop('email', None)
+    session.pop('email')
     return redirect(url_for('Home')) 
 
 @app.route("/dash")

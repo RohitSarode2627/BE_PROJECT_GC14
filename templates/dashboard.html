@@ -1,186 +1,144 @@
-{% extends "layout.html" %}
+<html class="mb-4">
 
-{% block title %}Prediction Dashboard | Aegis Crime Intelligence{% endblock %}
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Crime Prediction</title>
+	<meta name="viewport" content="">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
 
-{% block content %}
-<div class="hero-section" style="padding-top: 3rem; padding-bottom: 2rem;">
-  <div class="pill-tag">
-    <span class="pulse-dot"></span>
-    <span>LIVE PREDICTION ENGINE & SPATIAL RISK FORECASTING</span>
-  </div>
-  <h1 class="hero-title" style="font-size: 2.8rem; margin-bottom: 0.8rem;">Crime Risk Forecaster</h1>
-  <p class="hero-subtitle" style="margin-bottom: 1.5rem;">
-    Input temporal and geospatial parameters to forecast crime categories and risk propensity using our multi-output Random Forest algorithm.
-  </p>
 
-  <!-- Live Stats Tiles -->
-  <div class="stat-grid" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
-    <div class="stat-card">
-      <div class="stat-num">96.3%</div>
-      <div class="stat-label">Model Accuracy</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">6</div>
-      <div class="stat-label">Crime Categories</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">2,090+</div>
-      <div class="stat-label">Incidents Trained</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">Real-Time</div>
-      <div class="stat-label">Geo-Nominatim API</div>
-    </div>
-  </div>
-</div>
 
-<div class="container" style="max-width: 900px; margin: 0 auto 5rem; padding: 0 1.5rem;">
-  <div class="glass-card" style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); border-color: var(--border-glow);">
-    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 1.2rem; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-      <div style="display: flex; align-items: center; gap: 0.8rem;">
-        <div class="brand-icon" style="width: 44px; height: 44px; font-size: 1.2rem;">
-          <i class="fa-solid fa-crosshairs"></i>
-        </div>
-        <div>
-          <h3 style="font-size: 1.4rem; margin-bottom: 0.2rem;">Incident Parameters</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Specify target hotspot and temporal coordinates</p>
-        </div>
-      </div>
-      
-      <a href="/map" class="btn btn-outline btn-sm" target="_blank">
-        <i class="fa-solid fa-map-location-dot"></i> View Incident Map
-      </a>
-    </div>
 
-    <form action="{{ url_for('predict') }}" method="POST" id="prediction-form">
-      <!-- Location selection -->
-      <div class="form-group">
-        <label for="location-select" class="form-label">
-          <i class="fa-solid fa-location-dot" style="color: var(--secondary); margin-right: 4px;"></i> Select Hotspot Location or Street
-        </label>
-        <select name="location" id="location-select" class="form-control" required onchange="handleLocationChange(this)">
-          <option value="" disabled selected>Choose a monitored urban corridor / street...</option>
-          <option value="TREMONT ST">TREMONT ST (Commercial & Transit Hotspot)</option>
-          <option value="WASHINGTON ST">WASHINGTON ST (High Traffic Corridor)</option>
-          <option value="DORCHESTER AVE">DORCHESTER AVE (High Density Zone)</option>
-          <option value="BLUE HILL AVE">BLUE HILL AVE (Urban Center)</option>
-          <option value="HARRISON AVE">HARRISON AVE (Mixed Commercial Zone)</option>
-          <option value="COLUMBIA RD">COLUMBIA RD (Suburban Arterial)</option>
-          <option value="GREENMOUNT ST">GREENMOUNT ST (Residential Corridor)</option>
-          <option value="ARLINGTON ST">ARLINGTON ST (Downtown Central)</option>
-          <option value="ALLSTON ST">ALLSTON ST (Mixed Use Hub)</option>
-          <option value="DEVON ST">DEVON ST (Local Neighborhood)</option>
-          <option value="PRESCOTT ST">PRESCOTT ST (Avenue Transit)</option>
-          <option value="AVILIA RD">AVILIA RD (Perimeter Corridor)</option>
-          <option value="FOTTLER RD">FOTTLER RD (Cross-district Route)</option>
-          <option value="HALLET ST">HALLET ST (Transit Link)</option>
-          <option value="AKRON ST">AKRON ST (Suburban Belt)</option>
-          <option value="HANSFORD ST">HANSFORD ST (Inner Ring)</option>
-          <option value="MONTCALM AVE">MONTCALM AVE (Avenue District)</option>
-          <option value="PARIS ST">PARIS ST (Old Quarter)</option>
-          <option value="BLCKFORD ST">BLCKFORD ST (Warehouse & Terminal)</option>
-          <option value="MORTAN ST">MORTAN ST (Southern Corridor)</option>
-          <option value="custom">-- Enter Custom City / Address / Coordinates --</option>
-        </select>
-      </div>
+	<!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'> -->
 
-      <!-- Custom address text input (shown if selected or as alternative) -->
-      <div class="form-group" id="custom-address-group" style="display: none;">
-        <label for="custom-address" class="form-label">
-          <i class="fa-solid fa-magnifying-glass-location" style="margin-right: 4px;"></i> Custom Address / City Name
-        </label>
-        <input type="text" id="custom-address" class="form-control" placeholder="e.g. Rajwada, Indore, Madhya Pradesh">
-      </div>
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/animate.css')}}">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/icomoon.css')}}">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/bootstrap.css')}}">
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/owl.carousel.min.css')}}">
 
-      <!-- Date & Time Picker -->
-      <div class="form-group">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-          <label for="timestamp" class="form-label" style="margin-bottom: 0;">
-            <i class="fa-solid fa-calendar-days" style="color: var(--primary-light); margin-right: 4px;"></i> Date & Timestamp
-          </label>
-          <button type="button" class="btn btn-outline btn-sm" onclick="setCurrentDateTime()" style="font-size: 0.78rem; padding: 0.25rem 0.65rem;">
-            <i class="fa-regular fa-clock"></i> Set to Current Time
-          </button>
-        </div>
-        <input type="datetime-local" class="form-control" name="timestamp" id="timestamp" step="1" required>
-      </div>
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/owl.theme.default.min.css')}}">
 
-      <!-- Optional Demographics / Additional Context -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
-        <div class="form-group">
-          <label for="area_type" class="form-label"><i class="fa-solid fa-city" style="margin-right: 4px;"></i> Environment Type</label>
-          <select name="area_type" id="area_type" class="form-control">
-            <option value="urban">Urban Commercial</option>
-            <option value="residential">Residential Neighborhood</option>
-            <option value="transit">Transit & Highway Station</option>
-            <option value="industrial">Industrial Zone</option>
-          </select>
-        </div>
+	<link rel="stylesheet" href="{{url_for('static',filename ='css2/style.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename ='css1/styles.css')}}">
 
-        <div class="form-group">
-          <label for="algorithm_profile" class="form-label"><i class="fa-solid fa-microchip" style="margin-right: 4px;"></i> Classifier Model</label>
-          <select id="algorithm_profile" class="form-control" disabled>
-            <option selected>Random Forest (100 Trees, 96.3% Acc)</option>
-          </select>
-        </div>
-      </div>
 
-      <!-- Action Buttons -->
-      <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
-        <button type="submit" class="btn btn-primary btn-lg" style="flex: 2; min-width: 220px;" id="predict-btn">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Run Crime Risk Prediction
-        </button>
-        <button type="reset" class="btn btn-outline btn-lg" style="flex: 1;" onclick="handleReset()">
-          <i class="fa-solid fa-rotate-left"></i> Reset
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-{% endblock %}
+	<!-- Modernizr JS -->
+	<script src="{{url_for('static',filename ='js2/modernizr-2.6.2.min.js')}}"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
 
-{% block scripts %}
-<script>
-  function setCurrentDateTime() {
-    const now = new Date();
-    // Offset for local timezone
-    const offset = now.getTimezoneOffset() * 60000;
-    const localISOTime = (new Date(now - offset)).toISOString().slice(0, 19);
-    document.getElementById('timestamp').value = localISOTime;
-  }
+</head>
 
-  function handleLocationChange(select) {
-    const customGroup = document.getElementById('custom-address-group');
-    const customInput = document.getElementById('custom-address');
-    if (select.value === 'custom') {
-      customGroup.style.display = 'block';
-      customInput.required = true;
-      customInput.name = 'location';
-      select.name = 'location_preset';
-    } else {
-      customGroup.style.display = 'none';
-      customInput.required = false;
-      customInput.name = '';
-      select.name = 'location';
-    }
-  }
+<body
+	style="background-image: url('https://images.unsplash.com/photo-1584985598389-3a36cb7aa1c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8b25lJTIwY29sb3J8ZW58MHx8MHx8&w=1000&q=80');">
+	<header>
+		<div class="container text-center">
+			<div class="fh5co-navbar-brand">
+				<!-- <a class="fh5co-logo" href="/">C R I M E P R E D I C T I O N</a> -->
+				<h1> C R I M E P R E D I C T I O N </h1>
+			</div>
+			<nav id="fh5co-main-nav" role="navigation">
+				<ul>
+					<!-- <li><a href="#" class="active">Predict Crime</a></li>
+					<li><a href="/work.html">Crime Analysis</a></li> -->
+					<li><a href="/logout">LOGOUT</a></li>
+					<li><a href="/map">Crime Map</a></li>
 
-  function handleReset() {
-    document.getElementById('custom-address-group').style.display = 'none';
-    const select = document.getElementById('location-select');
-    select.name = 'location';
-  }
+				</ul>
+			</nav>
+		</div>
+	</header>
 
-  // Pre-fill current timestamp on load
-  window.addEventListener('DOMContentLoaded', () => {
-    setCurrentDateTime();
-  });
+	<div class="owl-carousel owl-carousel1 owl-carousel-fullwidth fh5co-light-arrow animate-box"
+		data-animate-effect="fadeIn">
 
-  // Loading animation on submit
-  document.getElementById('prediction-form').addEventListener('submit', function() {
-    const btn = document.getElementById('predict-btn');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analyzing Spatial Crime Signals...';
-    btn.style.opacity = '0.85';
-  });
-</script>
-{% endblock %}
+	</div>
+
+	<div id="fh5co-intro-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h3>"It's not how many criminal you catch, it's how many crime you prevent."</h3>
+
+				</div>
+			</div>
+		</div>
+	</div><!-- end fh5co-intro-section -->
+	<div align="center">
+		<h1>Predict Crime</h2>
+	</div>
+	<div class="container position-relative px-4 px-lg-5">
+
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div align="center">
+				<form action="{{ url_for('predict') }}" method="POST">
+					<select name="Location" style="min-width: 1270px; height: 45px;;">
+						<option value="" disabled selected>Select Location</option>
+						<option value="ARLINGTON ST">ARLINGTON ST</option>
+						<option value="ALLSTON ST">ALLSTON ST</option>
+						<option value="DEVON ST">DEVON ST</option>
+						<option value="PRESCOTT ST">PRESCOTT ST</option>
+						<option value="DORCHESTER AVE">DORCHESTER AVE</option>
+						<option value="TREMONT ST">TREMONT ST</option>
+						<option value="AVILIA RD">AVILIA RD</option>
+						<option value="FOTTLER RD">FOTTLER RD</option>
+						<option value="HALLET ST">HALLET ST</option>
+						<option value="COLUMBIA RD">COLUMBIA RD</option>
+						<option value="AKRON ST">AKRON ST</option>
+						<option value="HANSFORD ST">HANSFORD ST</option>
+						<option value="HARRISON AVE">HARRISION AVE</option>
+						<option value="MONTCALM AVE">MONTCALM AVE</option>
+						<option value="GREENMOUNT ST">GREENMOUNT ST</option>
+						<option value="PARIS ST">PARIS ST</option>
+						<option value="WASHINGTON ST">WASHINGTON ST</option>
+						<option value="BLCKFORD ST">BLCKFORD ST</option>
+						<option value="MORTAN ST">MORTAN ST</option>
+						<option value="TREEMONT ST">TREEMONT ST</option>
+						<option value="BLUE HILL AVE">BLUE HILL AVE</option>
+					</select>
+					<br>
+					<br>
+					<input type="datetime-local" class="form-control" name="timestamp" step="1" required=""><br>
+					<input type="text" class="form-control" name="" placeholder="Age" required=""><br>
+					<label for="gender"></label>
+					<select name="gender" id="gender" style="min-width: 1270px; height: 45px;;">
+						<option value="" disabled selected>Select Age</option>
+						<option value="volvo">Male</option>
+						<option value="saab">Female</option>
+					</select>
+					<br>
+					<br>
+					<input type="submit" value="Predict" class="btn btn-primary">
+					<input type="reset" value="Reset Data" class="btn btn-primary">
+				</form>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<div id="footer" class="container px-4 px-lg-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 text-center">
+						<p>Copyright 2023 Crime Prtediction TM Rights Reserved.</p>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<!-- jQuery -->
+
+
+</body>
+
+</html>

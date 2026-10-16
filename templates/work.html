@@ -1,132 +1,194 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Crime Prediction</title>
+	
 
-{% block title %}Crime Analytics & Visualizations | Aegis Crime Intelligence{% endblock %}
+  <!-- 
+	//////////////////////////////////////////////////////
 
-{% block content %}
-<div class="hero-section" style="padding-top: 3.5rem; padding-bottom: 2rem;">
-  <div class="pill-tag">
-    <span>EXPLORATORY DATA ANALYSIS & MODEL INTERPRETABILITY</span>
-  </div>
-  <h1 class="hero-title" style="font-size: 2.8rem; margin-bottom: 0.8rem;">Crime Analytics Wall</h1>
-  <p class="hero-subtitle">
-    In-depth data visual insights, feature importances, density curves, and spatial distributions extracted from the trained crime corpus.
-  </p>
-</div>
+	FREE HTML5 TEMPLATE 
+	DESIGNED & DEVELOPED by FREEHTML5.CO
+		
+	Website: 		http://freehtml5.co/
+	Email: 			info@freehtml5.co
+	Twitter: 		http://twitter.com/fh5co
+	Facebook: 		https://www.facebook.com/fh5co
 
-<div class="container" style="max-width: 1250px; margin: 0 auto 5rem; padding: 0 1.5rem;">
-  
-  <!-- Analytics Filter/Overview Pills -->
-  <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
-    <div class="footer-status-pill" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">
-      <i class="fa-solid fa-chart-simple" style="color: var(--secondary);"></i> Decision Trees & Ensembles
-    </div>
-    <div class="footer-status-pill" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">
-      <i class="fa-solid fa-fire" style="color: var(--accent-danger);"></i> Hotspot Density & Hexbins
-    </div>
-    <div class="footer-status-pill" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">
-      <i class="fa-solid fa-clock" style="color: var(--primary-light);"></i> Temporal Hourly Distribution
-    </div>
-  </div>
+	//////////////////////////////////////////////////////
+	 -->
 
-  <!-- Visualization Grid -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2rem;">
-    
-    <!-- Chart 1: Feature Importance -->
-    <div class="glass-card interactive" style="padding: 1.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h4 style="font-size: 1.15rem; margin: 0;">Feature Importance Ranking</h4>
-        <span class="user-badge" style="font-size: 0.75rem;">Random Forest</span>
-      </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
-        Relative weights of Hour, Day, Day of Year, Week, Latitude, and Longitude in predicting crime outcomes.
-      </p>
-      <div style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-glass);">
-        <img src="/static/images2/download (9).png" alt="Decision Tree Feature Importance" style="width: 100%; height: auto; display: block;" onerror="this.src='/static/images2/img16.jpeg'">
-      </div>
-    </div>
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
 
-    <!-- Chart 2: Crime Density & Distribution -->
-    <div class="glass-card interactive" style="padding: 1.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h4 style="font-size: 1.15rem; margin: 0;">Spatial Density Analysis</h4>
-        <span class="user-badge" style="font-size: 0.75rem; background: rgba(6, 182, 212, 0.12); color: var(--secondary);">KDE & Clusters</span>
-      </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
-        Kernel density estimations of incident cluster concentrations along major metropolitan corridors.
-      </p>
-      <div style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-glass);">
-        <img src="/static/images2/download (7).png" alt="Crime Density Plot" style="width: 100%; height: auto; display: block;" onerror="this.src='/static/images2/img17.jpeg'">
-      </div>
-    </div>
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="{{url_for('static',filename='favicon.ico')}}">
 
-    <!-- Chart 3: Decision Tree Structure -->
-    <div class="glass-card interactive" style="padding: 1.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h4 style="font-size: 1.15rem; margin: 0;">Decision Tree Node Partitioning</h4>
-        <span class="user-badge" style="font-size: 0.75rem;">Tree Split</span>
-      </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
-        Hierarchical decision boundaries splitting temporal clusters into targeted IPC criminal statutes.
-      </p>
-      <div style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-glass);">
-        <img src="/static/images2/download (10).jpg" alt="Decision Tree Graph" style="width: 100%; height: auto; display: block;" onerror="this.src='/static/images2/img15.jpeg'">
-      </div>
-    </div>
+	<!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'> -->
+	
+		<!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'> -->
 
-    <!-- Chart 4: Random Forest Estimators -->
-    <div class="glass-card interactive" style="padding: 1.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h4 style="font-size: 1.15rem; margin: 0;">Ensemble Estimator Variance</h4>
-        <span class="user-badge" style="font-size: 0.75rem; background: rgba(16, 185, 129, 0.12); color: #34d399;">Random Forest</span>
-      </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
-        Variance reduction and bootstrap aggregation curves across the 100 individual estimators.
-      </p>
-      <div style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-glass);">
-        <img src="/static/images2/download (11).png" alt="Random Forest Curves" style="width: 100%; height: auto; display: block;" onerror="this.src='/static/images2/img18.jpg'">
-      </div>
-    </div>
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="{{url_for('static',filename='css2/animate.css')}}">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="{{url_for('static',filename='css2/icomoon.css')}}">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="{{url_for('static',filename='css2/bootstrap.css')}}">
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="{{url_for('static',filename='css2/owl.carousel.min.css')}}">
+	
+	<link rel="stylesheet" href="{{url_for('static',filename='css2/owl.theme.default.min.css')}}">
 
-    <!-- Chart 5: Hourly Incident Correlation -->
-    <div class="glass-card interactive" style="padding: 1.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h4 style="font-size: 1.15rem; margin: 0;">KNN Principle & Decision Boundaries</h4>
-        <span class="user-badge" style="font-size: 0.75rem;">Spatial Clustering</span>
-      </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
-        Comparative analysis of nearest neighbor spatial cluster classifications.
-      </p>
-      <div style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-glass);">
-        <img src="{{ url_for('static', filename='images2/The-principle-diagram-of-the-kNN-classification-algorithm.png') }}" alt="KNN Clustering Diagram" style="width: 100%; height: auto; display: block;">
-      </div>
-    </div>
+	<link rel="stylesheet" href="{{url_for('static',filename='css2/style.css')}}">
 
-    <!-- Chart 6: Comparative Urban Infraction Ratios -->
-    <div class="glass-card interactive" style="padding: 1.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h4 style="font-size: 1.15rem; margin: 0;">Comparative Crime Rates</h4>
-        <span class="user-badge" style="font-size: 0.75rem; background: rgba(244, 63, 94, 0.12); color: #fb7185;">IPC Statistics</span>
-      </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
-        Distribution of specific crime categorizations across historical reporting periods.
-      </p>
-      <div style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-glass);">
-        <img src="{{ url_for('static', filename='images2/1404833002-998_Top-5-cities-by-number-of-rapes.png') }}" alt="Crime Statistics Chart" style="width: 100%; height: auto; display: block;">
-      </div>
-    </div>
 
-  </div>
+	<!-- Modernizr JS -->
+	<script src="{{url_for('static',filename='js2/modernizr-2.6.2.min.js')}}"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
 
-  <!-- Interactive Map CTA Banner -->
-  <div class="glass-card" style="margin-top: 3.5rem; text-align: center; border-color: var(--border-glow);">
-    <h3 style="font-size: 1.8rem; margin-bottom: 0.8rem;">Want to view geospatial incident points on an interactive map?</h3>
-    <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem;">
-      Explore our interactive Leaflet crime cluster map with over 2,000 geolocated historical incidents across the metro network.
-    </p>
-    <a href="/map" class="btn btn-secondary btn-lg" target="_blank">
-      <i class="fa-solid fa-map-location-dot"></i> Open Interactive Crime Map
-    </a>
-  </div>
+	</head>
+	<body>
+	<header>
+		<div class="container text-center">
+			<div class="fh5co-navbar-brand">
+				<a class="fh5co-logo" href="/">CRIME PREDICTION</a>
+			</div>
+			<nav id="fh5co-main-nav" role="navigation">
+				<ul>
+				
+					<li><a href="/work.html" class="active">Crime Analysis</a></li>
+					<li><a href="/logout">Logout</a></li>
+					
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<div align="center">
+	<section id="three" class="wrapper style2">
+				<div class="inner">
+					<header class="align-center">
+						<p class="special">Analysis Wall</p>
+						<h2>VISULIZATION</h2>
+					</header>
+					<div class="gallery">
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images/1404833002-998_Top-5-cities-by-number-of-rapes.png" alt="" /></a>
+								<p>Crime Rate</p>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/download (7).png" alt="" /></a>
+								<p>Crime Density</p>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/download (9).png" alt="" /></a>
+								<p>Decision Tree Feature Importance</p>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/download (10).jpg" alt="" /></a>
+								<p>Decision Tree </p>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/download (11).png" alt="" /></a>
+								<p>Random-Forest </p>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/img15.jpeg" alt="" /></a>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/img16.jpeg" alt="" /></a>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/img17.jpeg" alt="" /></a>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/img18.jpg" alt="" /></a>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="{{url_for('static',filename='images1/img19.jpeg')}}" alt="" /></a>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/img20.jpeg" alt="" /></a>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="#"><img src="/static/images2/img21.jpg" alt="" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+	</div>
+	<footer>
+		<div id="footer" class="fh5co-border-line">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 text-center">
+						<p>Copyright 2022 Crime Prediction TM</p>
+						<p class="fh5co-social-icons">
+							<a href="#"><i class="icon-twitter-with-circle"></i></a>
+							<a href="https://www.facebook.com/vikrambhati96"><i class="icon-facebook-with-circle"></i></a>
+							<a href="https://www.linkedin.com/in/vikramadityab/"><i class="icon-linkedin-with-circle"></i></a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
 
-</div>
-{% endblock %}
+	<!-- jQuery -->
+	<script src="{{url_for('static',filename='js2/jquery.min.js')}}"></script>
+	<!-- jQuery Easing -->
+	<script src="{{url_for('static',filename='js2/jquery.easing.1.3.js')}}"></script>
+	<!-- Bootstrap -->
+	<script src="{{url_for('static',filename='js2/bootstrap.min.js')}}"></script>
+	<!-- Waypoints -->
+	<script src="{{url_for('static',filename='js2/jquery.waypoints.min.js')}}"></script>
+	<!-- Owl carousel -->
+	<script src="{{url_for('static',filename='js2/owl.carousel.min.js')}}"></script>
+	<!-- Stellar -->
+	<script src="{{url_for('static',filename='js2/jquery.stellar.min.js')}}"></script>
+
+	<!-- Main JS (Do not remove) -->
+	<script src="{{url_for('static',filename='js2/main.js')}}"></script>
+
+	</body>
+</html>
+
