@@ -143,7 +143,7 @@ def predict():
     if request.method == 'POST':
 
         address = request.form.get('location')
-        geolocator = Nominatim(user_agent="PAASBAAN-crime-prediction-master")
+        geolocator = Nominatim(user_agent="crime-prediction-application")
         location = geolocator.geocode(address,timeout=None)
         print(location.address)
         lat=[location.latitude]

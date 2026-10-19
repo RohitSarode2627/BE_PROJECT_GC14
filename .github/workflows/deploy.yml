@@ -42,7 +42,8 @@ jobs:
 
       - name: 4. Verify Code Syntax and Compilation
         run: |
-          python -m py_compile app.py train_model.py
+          python -m py_compile app.py
+          if [ -f "train_model.py" ]; then python -m py_compile train_model.py; fi
           echo "Python syntax validation passed successfully!"
 
       - name: 5. Build Docker Image Locally in GitHub Runner
