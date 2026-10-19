@@ -38,10 +38,12 @@ app.config['MAIL_USERNAME'] = params['gmail_user']
 app.config['MAIL_PASSWORD'] = params['gmail_password']
 mail = Mail(app)
 
-if(local_server):
-    app.config['SQLALCHEMY_DATABASE_URI'] = params['local_uri']
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = params['prod_uri']
+# Configure database URI: environment variable takes precedence, fallback to config.json
+db_uri = os.environ.get('DATABASE_URL')
+if not db_uri:
+    db_uri = params['local_uri'] if local_server else params['prod_uri']
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
@@ -49,10 +51,10 @@ class Register(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     uname = db.Column(db.String(50), nullable=False)
-    mobile = db.Column(db.String(10), nullable=False)
+    mobile = db.Column(db.String(15), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(10), nullable=False)
-    cpassword = db.Column(db.String(10), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    cpassword = db.Column(db.String(255), nullable=False)
 
 class Contact(db.Model):
     id=db.Column(db.Integer,primary_key=True)
@@ -214,4 +216,5 @@ def dash():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)

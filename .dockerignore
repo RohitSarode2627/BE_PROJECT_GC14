@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Version control & project docs
+.git/
+.gitignore
+.dockerignore
+Dockerfile
+README.md
+CICD_PIPELINE_GUIDE.md
+.github/
+
+# Notebooks & large backups
+*.ipynb
+*.bak
+Analysis/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
