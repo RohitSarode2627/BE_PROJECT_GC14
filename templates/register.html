@@ -1,85 +1,95 @@
-<!doctype html>
-<html lang="en">
-  <head>
-  	<title>Sign Up</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "layout.html" %}
 
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+{% block title %}Create Account | Crime Intelligence System{% endblock %}
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
-	<link rel="stylesheet" href="{{url_for('static',filename = 'css1/style.css')}}">
+{% block content %}
+<div class="auth-wrapper">
+  <div class="glass-card auth-card" style="max-width: 600px;">
+    <div class="auth-header">
+      <div class="brand-icon" style="margin: 0 auto 1.2rem; width: 50px; height: 50px; font-size: 1.4rem;">
+        <i class="fa-solid fa-user-plus"></i>
+      </div>
+      <h2 class="auth-title">Create an Account</h2>
+      <p class="auth-subtitle">Join the crime analytics and security intelligence network</p>
+    </div>
 
-	</head>
-	<body>
-	<section class="ftco-section">
-		<div class="container">
-			<main>
-                                {% with messages=get_flashed_messages(with_categories=true) %}
-                                {% if messages %}
-                                {% for category,message in messages %}
-                                {% if category== 'success' %}
-                                <div class="alert alert-success mb-3" role="alert">{{message}}</div>
-                                {% endif %}
-                                {% if category== 'error' %}
-                                <div class="alert alert-danger mb-3" role="alert">{{message}}</div>
-                                {% endif %}
-                                {% endfor %}
-                                {% endif %}
-                                {% endwith %}
-                            </main>
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Sign Up</h2>
-				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-md-7 col-lg-5">
-					<div class="login-wrap">
-		      	<div class="img" style="background-image: url({{url_for('static',filename = 'images/bg.jpg')}});"></div>
-		      	<h3 class="text-center mb-4">Sign Up</h3>
-						<form action="/register" class="signup-form" method="post">
-		      		<div class="form-group mb-3">
-		      			<input type="text" class="form-control" name="name" id="name" placeholder="Your Name" required="">
-		      		</div>
-		      		<div class="form-group mb-3">
-		      			<input type="text" class="form-control" name="uname" id="uname" placeholder="User Name" required="">
-		      		</div>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert {% if category == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+            <i class="fa-solid {% if category == 'success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-		      		<div class="form-group mb-3">
-		      			<input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile Number" required="">
-		      		</div>
+    <form action="/register" method="POST" id="register-form" onsubmit="return validatePasswords()">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="name" class="form-label"><i class="fa-solid fa-id-badge" style="margin-right: 4px;"></i> Full Name</label>
+          <input type="text" class="form-control" name="name" id="name" placeholder="John Doe" required minlength="4">
+        </div>
 
-		      		<div class="form-group mb-3">
-		      			<input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required="">
-		      		</div>
-	            <div class="form-group mb-3">
-	              <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-	            </div>
-	             <div class="form-group mb-3">
-	              <input id="password" type="password" class="form-control" name="cpassword" placeholder="Confirm Password" required="">
-	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-	            </div>
-	            <div class="form-group">
-	            	<button type="submit" class="form-control btn btn-primary submit px-3">Submit</button>
-	            </div>
-	          </form>
-	            <a href="/login" class="signup-image-link">Already a member</a>
-	             <br>
-	             <a href="/" class="signup-image-link">Cancel</a>
-	        </div>
-				</div>
-			</div>
-		</div>
-	</section>
+        <div class="form-group">
+          <label for="uname" class="form-label"><i class="fa-solid fa-at" style="margin-right: 4px;"></i> Username</label>
+          <input type="text" class="form-control" name="uname" id="uname" placeholder="johndoe123" required>
+        </div>
+      </div>
 
-	<script src="{{url_for('static',filename = 'js1/jquery.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'js1/popper.js')}}"></script>
-  <script src="{{url_for('static',filename = 'js1/bootstrap.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'js1/main.js')}}"></script>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="mobile" class="form-label"><i class="fa-solid fa-phone" style="margin-right: 4px;"></i> Mobile Number</label>
+          <input type="tel" class="form-control" name="mobile" id="mobile" placeholder="9876543210" required minlength="10" maxlength="10">
+        </div>
 
-	</body>
-</html>
+        <div class="form-group">
+          <label for="email" class="form-label"><i class="fa-solid fa-envelope" style="margin-right: 4px;"></i> Email Address</label>
+          <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+        </div>
+      </div>
 
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="password" class="form-label"><i class="fa-solid fa-key" style="margin-right: 4px;"></i> Password (min 8 chars)</label>
+          <input id="password" type="password" class="form-control" name="password" placeholder="••••••••" required minlength="8">
+        </div>
+
+        <div class="form-group">
+          <label for="cpassword" class="form-label"><i class="fa-solid fa-check-double" style="margin-right: 4px;"></i> Confirm Password</label>
+          <input id="cpassword" type="password" class="form-control" name="cpassword" placeholder="••••••••" required minlength="8">
+        </div>
+      </div>
+
+      <div id="password-match-error" style="display: none; color: var(--accent-danger); font-size: 0.85rem; margin-bottom: 1rem; text-align: left;">
+        <i class="fa-solid fa-circle-exclamation"></i> Passwords do not match.
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 0.5rem;">
+        <i class="fa-solid fa-user-check"></i> Register Account
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      Already have an account? <a href="/login">Sign in here</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function validatePasswords() {
+    const pw = document.getElementById('password').value;
+    const cpw = document.getElementById('cpassword').value;
+    const err = document.getElementById('password-match-error');
+    if (pw !== cpw) {
+      err.style.display = 'block';
+      return false;
+    }
+    err.style.display = 'none';
+    return true;
+  }
+</script>
+{% endblock %}

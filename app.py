@@ -207,7 +207,7 @@ def map():
 
 @app.route("/logout", methods = ['GET','POST'])
 def logout():
-    session.pop('email')
+    session.pop('email', None)
     return redirect(url_for('Home')) 
 
 @app.route("/dash")

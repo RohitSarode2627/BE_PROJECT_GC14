@@ -1,245 +1,119 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <!-- Basic -->
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!-- Mobile Metas -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <!-- Site Metas -->
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+{% block title %}About System | Crime Intelligence & Prevention{% endblock %}
 
-  <title>Crime Prediction |About</title>
+{% block content %}
+<div class="hero-section" style="padding-top: 3.5rem; padding-bottom: 2rem;">
+  <div class="pill-tag">
+    <span>SYSTEM ARCHITECTURE & METHODOLOGY</span>
+  </div>
+  <h1 class="hero-title" style="font-size: 2.8rem; margin-bottom: 0.8rem;">About Crime Intelligence System</h1>
+  <p class="hero-subtitle">
+    Bridging machine learning, spatial data science, and crime analytics to provide law enforcement and citizens with predictive threat forecasting.
+  </p>
+</div>
 
-  <!-- slider stylesheet -->
-  <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
-
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="{{url_for('static',filename ='css/bootstrap.css')}}" />
-
-  <!-- fonts style -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Roboto:400,500&display=swap"
-    rel="stylesheet" />
-  <!-- Custom styles for this template -->
-  <link href="{{url_for('static',filename ='css/style.css')}}" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="{{url_for('static',filename ='css/responsive.css')}}" rel="stylesheet" />
-</head>
-
-<body>
-  <!-- header section strats -->
-  <header class="header_section">
-    <div class="container">
-      <nav class="navbar navbar-expand-lg custom_nav-container ">
-        <a class="navbar-brand" href="#">
-          <div class="logo_box">
-            <img src="{{url_for('static',filename ='images/logo.png')}}" alt="" />
-          </div>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mr-2">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/about">About Us </a>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
-            </li>
-           
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Login </a>
-            </li>
-             <li class="nav-item">
-              <a class="nav-link" href="/contact">Contact us</a>
-            </li>
-          </ul>
-          
-        </div>
-      </nav>
+<div class="container" style="max-width: 1100px; margin: 0 auto 5rem; padding: 0 1.5rem;">
+  
+  <!-- Mission Statement Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin-bottom: 3.5rem;">
+    <div class="glass-card">
+      <div class="brand-icon" style="margin-bottom: 1rem; width: 44px; height: 44px; font-size: 1.2rem;">
+        <i class="fa-solid fa-bullseye"></i>
+      </div>
+      <h3 style="font-size: 1.3rem; margin-bottom: 0.6rem;">Project Mission</h3>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+        Traditional policing responds to crime after it occurs. Our predictive system transforms reactive policing into proactive security by identifying high-risk spatial-temporal hotspots before incidents transpire.
+      </p>
     </div>
-  </header>
-  <!-- end header section -->
 
-  <!-- slider section -->
+    <div class="glass-card">
+      <div class="brand-icon" style="margin-bottom: 1rem; width: 44px; height: 44px; font-size: 1.2rem; background: linear-gradient(135deg, var(--secondary) 0%, #0891b2 100%);">
+        <i class="fa-solid fa-code-branch"></i>
+      </div>
+      <h3 style="font-size: 1.3rem; margin-bottom: 0.6rem;">Algorithm Pipeline</h3>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+        Our multi-stage pipeline integrates Nominatim OpenStreetMap geocoding, datetime component decomposition, and an ensemble Random Forest model trained on verified urban crime records.
+      </p>
+    </div>
+  </div>
 
+  <!-- Detailed Technical Specifications -->
+  <div class="glass-card" style="margin-bottom: 3rem;">
+    <h3 style="font-size: 1.6rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+      <i class="fa-solid fa-sliders" style="color: var(--primary-light);"></i> Model Specifications & Performance
+    </h3>
 
-  <!-- end slider section -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 2rem;">
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem;">
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">ALGORITHM</div>
+        <div style="font-size: 1.2rem; font-weight: 700; color: #fff; margin-top: 0.2rem;">Random Forest</div>
+        <div style="font-size: 0.85rem; color: var(--secondary);">100 Estimators</div>
+      </div>
 
-  <!-- welcome section -->
-  <section class="welcome_section layout_padding">
-    <div class="container-fluid">
-      <div class="row">
-        <div class=" col-md-6">
-          <div>
-            <img class="img-fluid" src="{{url_for('static',filename ='images/welcome.jpg')}}" alt="" />
-          </div>
-        </div>
-        <div class=" col-md-6">
-          <div class="welcome_detail">
-            <h3>
-              Welcome
-            </h3>
-            
-            <p>
-              Police analysts are required to unravel the complexities in data to assist operational personnel in arresting offenders and directing crime prevention strategies. However, the volume of crime that is being committed and the awareness of modern criminals make this a daunting task. The ability to analyse this amount of data with its inherent complexities without. using computational support puts a strain on human resources.
-            </p>
-            <div class="welcome_detail-btn">
-              
-            </div>
-          </div>
-        </div>
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem;">
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">TRAIN ACCURACY</div>
+        <div style="font-size: 1.2rem; font-weight: 700; color: #34d399; margin-top: 0.2rem;">95.82%</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">Training Set (80%)</div>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem;">
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">TEST ACCURACY</div>
+        <div style="font-size: 1.2rem; font-weight: 700; color: #34d399; margin-top: 0.2rem;">96.30%</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">Validation Holdout (20%)</div>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem;">
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">INPUT FEATURES</div>
+        <div style="font-size: 1.2rem; font-weight: 700; color: #fff; margin-top: 0.2rem;">7 Parameters</div>
+        <div style="font-size: 0.85rem; color: var(--primary-light);">Spatial + Temporal</div>
       </div>
     </div>
-  </section>
-  <!-- end welcome section -->
 
-
-
-  <!-- info section -->
-  <section class="info_section layout_padding">
-    <div class="container">
-      <div class="row">
-        <div class=" col-md-4 info_detail">
-          <div>
-            <p>
-               The main reason for the change in crime detection and prevention lies in the before and after statistical observations of the authorities using such techniques. The sole purpose of this study is to determine how a combination of ML and computer vision can be used by law agencies or authorities to detect, prevent, and solve crimes at a much more accurate and faster rate. In summary, ML and computer vision techniques can bring about an evolution in law agencies.
-            </p>
-          </div>
-        </div>
-        <div class=" col-md-4 address_container">
-          <div>
-            <h3>
-              Address:
-            </h3>
-            <div class="address_link-container">
-              <a href="">
-                <img src="{{url_for('static',filename ='images/location.png')}}" alt="">
-                <span>Central Crime Intelligence Bureau,
-                  Pune, Maharashtra
-                </span>
-              </a>
-              <a href="">
-                <img src="{{url_for('static',filename ='images/phone.png')}}" alt="">
-                <span> Helpline: +91 - 100 / 112
-                </span>
-              </a>
-              <a href="">
-                <img src="{{url_for('static',filename ='images/mail.png')}}" alt="">
-                <span>
-                  Email: contact@crimeprediction.org
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class=" col-md-4 news_container">
-          <div>
-            <div>
-            
-              <form action="">
-               
-                <div>
-                  
-                </div>
-              </form>
-            </div>
-            <div class="social_container">
-              <div>
-                <img src="{{url_for('static',filename ='images/fb.png')}}" alt="">
-              </div>
-              <div>
-                <img src="{{url_for('static',filename ='images/twitter.png')}}" alt="">
-              </div>
-              <div>
-                <img src="{{url_for('static',filename ='images/linkedin.png')}}" alt="">
-              </div>
-              <div>
-                <img src="{{url_for('static',filename ='images/youtube.png')}}" alt="">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- end info section -->
-
-
-  <!-- footer section -->
-  <section class="container-fluid footer_section">
-    <p>
-      Copyright &copy; 2021 All Rights Reserved By
-      <a href="/">Crime Prediction TM</a>
+    <h4 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.8rem;">Feature Vector Engineering</h4>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.2rem;">
+      Each input query is dynamically encoded into a 7-dimensional normalized feature vector:
     </p>
-  </section>
-  <!-- footer section -->
+    <ul style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem;">
+      <li class="footer-status-pill"><i class="fa-solid fa-check" style="color: var(--accent-safe);"></i> Month (1-12)</li>
+      <li class="footer-status-pill"><i class="fa-solid fa-check" style="color: var(--accent-safe);"></i> Day of Month (1-31)</li>
+      <li class="footer-status-pill"><i class="fa-solid fa-check" style="color: var(--accent-safe);"></i> Hour of Day (0-23)</li>
+      <li class="footer-status-pill"><i class="fa-solid fa-check" style="color: var(--accent-safe);"></i> Day of Year (1-366)</li>
+      <li class="footer-status-pill"><i class="fa-solid fa-check" style="color: var(--accent-safe);"></i> ISO Week of Year (1-53)</li>
+      <li class="footer-status-pill"><i class="fa-solid fa-check" style="color: var(--accent-safe);"></i> Latitude (GPS float)</li>
+      <li class="footer-status-pill"><i class="fa-solid fa-check" style="color: var(--accent-safe);"></i> Longitude (GPS float)</li>
+    </ul>
+  </div>
 
-  <script type="text/javascript" src="{{url_for('static',filename ='js/jquery-3.4.1.min.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static',filename ='js/bootstrap.js')}}"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js">
-  </script>
-  <script type="text/javascript">
-    $(".owl-carousel").owlCarousel({
-      loop: true,
-      margin: 20,
-      nav: true,
-      navText: [],
-      autoplay: true,
-      autoplayHoverPause: true,
-      responsive: {
-        0: {
-          items: 1
-        },
-        600: {
-          items: 2
-        },
-        1000: {
-          items: 3
-        }
-      }
-    });
-  </script>
+  <!-- Tech Stack Highlights -->
+  <div class="glass-card">
+    <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Technology Stack</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: left;">
+      <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-md);">
+        <i class="fa-brands fa-python" style="font-size: 1.8rem; color: #60a5fa; margin-bottom: 0.5rem;"></i>
+        <h5 style="color: #fff; font-size: 1rem;">Python 3.11</h5>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Core runtime & ML engine</p>
+      </div>
 
-  <script>
-    $(".nav_search-btn").click(function () {
-      if ($(".nav_search-input").hasClass("d-none")) {
-        event.preventDefault();
-        $(".nav_search-input")
-          .animate({
-              left: "-1000px"
-            },
-            "1000000"
-          )
-          .removeClass("d-none");
-      } else {
-        $(".nav_search-input")
-          .animate({
-              left: "0px"
-            },
-            "1000000"
-          )
-          .addClass("d-none");
-      }
-    });
-  </script>
+      <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-md);">
+        <i class="fa-solid fa-flask" style="font-size: 1.8rem; color: #34d399; margin-bottom: 0.5rem;"></i>
+        <h5 style="color: #fff; font-size: 1rem;">Flask 3.x</h5>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Application server & REST routes</p>
+      </div>
 
+      <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-md);">
+        <i class="fa-solid fa-database" style="font-size: 1.8rem; color: #f59e0b; margin-bottom: 0.5rem;"></i>
+        <h5 style="color: #fff; font-size: 1rem;">MySQL Server</h5>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Relational crime records store</p>
+      </div>
 
+      <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-md);">
+        <i class="fa-solid fa-map" style="font-size: 1.8rem; color: #a855f7; margin-bottom: 0.5rem;"></i>
+        <h5 style="color: #fff; font-size: 1rem;">Leaflet & Folium</h5>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Interactive cluster heatmaps</p>
+      </div>
+    </div>
+  </div>
 
-
-
-</body>
-
-</html>
+</div>
+{% endblock %}

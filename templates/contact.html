@@ -1,57 +1,115 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Crime prediction |Contact Us</title>
-  <link rel="stylesheet" href="{{url_for('static',filename = 'css/style2.css')}}">
+{% extends "layout.html" %}
 
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<div class="container"> 
-<main>
-  {% with messages = get_flashed_messages() %}  
-         {% if messages %}  
-               {% for message in messages %}  
-               <div class="alert alert-danger" role="alert">
-                <center>{{message}}</center>
-               </div>z
-               {% endfor %}  
-         {% endif %}  
-      {% endwith %}  
-</main> 
-  <form id="contact" action="/contact" method="post">
-    <h3>Contact Form</h3>
-    <h4>Contact us today!</h4>
-    <fieldset>
-      <input placeholder="Full Name" type="text" name="name" id="name" tabindex="1" required autofocus>
-    </fieldset>
-    <fieldset>
-      <input placeholder="Email Address" type="email" name="email" id="email" tabindex="2" required>
-    </fieldset>
-   
-    <fieldset>
-      <input placeholder="subject" id="subject" type="text" name="subject" id="subject" tabindex="4" required>
-    </fieldset>
-    <fieldset>
-      <textarea placeholder="Type your message here...." name="message" id="message" tabindex="5" required></textarea>
-    </fieldset>
-    <fieldset>
-      <button name="submit" type="submit" id="contact-submit" onclick="myFunction()" data-submit="...Sending">Send now</button>
-      <a href="/" class="signup-image-link"><b><h4>Cancel</h4></b></a>
-    </fieldset>
-    <script>
-                  function myFunction() {
-                    alert("Your message is sucessfully submitted");
-                  }
-                </script>
-  </form>
- 
-  
+{% block title %}Contact & Incident Report | Crime Intelligence System{% endblock %}
+
+{% block content %}
+<div class="hero-section" style="padding-top: 3.5rem; padding-bottom: 2rem;">
+  <div class="pill-tag">
+    <span>SUPPORT & INCIDENT REPORTING</span>
+  </div>
+  <h1 class="hero-title" style="font-size: 2.8rem; margin-bottom: 0.8rem;">Get in Touch</h1>
+  <p class="hero-subtitle">
+    Report technical inquiries, submit feedback, or transmit safety notifications to the operations team.
+  </p>
 </div>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js'></script><script  src="{{url_for('static',filename = 'css/script.js')}}"></script>
 
-</body>
-</html>
+<div class="container" style="max-width: 1000px; margin: 0 auto 5rem; padding: 0 1.5rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+    
+    <!-- Contact Info Cards -->
+    <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+      <div class="glass-card" style="padding: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem;">
+          <div class="brand-icon" style="background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);">
+            <i class="fa-solid fa-truck-medical"></i>
+          </div>
+          <div>
+            <h4 style="font-size: 1.1rem; margin: 0;">Emergency Dispatch</h4>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">24/7 Rapid Response</span>
+          </div>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">
+          Dial <strong>100 / 112</strong> for immediate law enforcement assistance or <strong>1091</strong> for women's safety hotline.
+        </p>
+      </div>
+
+      <div class="glass-card" style="padding: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem;">
+          <div class="brand-icon">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <div>
+            <h4 style="font-size: 1.1rem; margin: 0;">Technical Operations</h4>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Model & Data Feedback</span>
+          </div>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">
+          Email: <a href="mailto:techteam@gmail.com">techteam@gmail.com</a>
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">
+          Mon - Fri, 9:00 AM - 6:00 PM IST
+        </p>
+      </div>
+
+      <div class="glass-card" style="padding: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem;">
+          <div class="brand-icon" style="background: linear-gradient(135deg, var(--secondary) 0%, #0891b2 100%);">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div>
+            <h4 style="font-size: 1.1rem; margin: 0;">Operations Center</h4>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Indore Crime Analytics Division</span>
+          </div>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+          Madhya Pradesh Urban Safety Surveillance Network.
+        </p>
+      </div>
+    </div>
+
+    <!-- Contact Form Card -->
+    <div class="glass-card">
+      <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Send a Message</h3>
+
+      <!-- Flashed messages -->
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form action="/contact" method="POST" id="contact-form">
+        <div class="form-group">
+          <label for="name" class="form-label"><i class="fa-solid fa-user" style="margin-right: 4px;"></i> Full Name</label>
+          <input type="text" name="name" id="name" class="form-control" placeholder="Inspector John Doe" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label"><i class="fa-solid fa-envelope" style="margin-right: 4px;"></i> Email Address</label>
+          <input type="email" name="email" id="email" class="form-control" placeholder="officer@police.gov.in" required>
+        </div>
+
+        <div class="form-group">
+          <label for="subject" class="form-label"><i class="fa-solid fa-tag" style="margin-right: 4px;"></i> Subject</label>
+          <input type="text" name="subject" id="subject" class="form-control" placeholder="Crime reporting / Model inquiry" required>
+        </div>
+
+        <div class="form-group">
+          <label for="message" class="form-label"><i class="fa-solid fa-comment-dots" style="margin-right: 4px;"></i> Message / Incident Details</label>
+          <textarea name="message" id="message" class="form-control" placeholder="Please describe the incident or feedback in detail..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+          <i class="fa-solid fa-paper-plane"></i> Transmit Message
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
