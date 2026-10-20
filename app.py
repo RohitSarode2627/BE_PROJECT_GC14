@@ -40,16 +40,22 @@ app.config['MAIL_USERNAME'] = params['gmail_user']
 app.config['MAIL_PASSWORD'] = params['gmail_password']
 mail = Mail(app)
 
-# Configure database URI: environment variable takes precedence, fallback to config.json
+# Configure database URI: environment variable takes precedence, fallback to sqlite for standalone ECS
 db_uri = os.environ.get('DATABASE_URL')
 if not db_uri:
-    db_uri = params['local_uri'] if local_server else params['prod_uri']
+    db_uri = os.environ.get('SQLITE_URL', 'sqlite:///crime.db')
 if db_uri and db_uri.startswith('mysql://'):
     db_uri = db_uri.replace('mysql://', 'mysql+pymysql://', 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+with app.app_context():
+    try:
+        db.create_all()
+    except Exception as e:
+        print(f"Database initialization note: {e}")
 
 class Register(db.Model):
     id = db.Column(db.Integer, primary_key=True)
