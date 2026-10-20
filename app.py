@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request,session,redirect,flash,url_for
+import pymysql
+pymysql.install_as_MySQLdb()
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from datetime import datetime
@@ -42,6 +44,8 @@ mail = Mail(app)
 db_uri = os.environ.get('DATABASE_URL')
 if not db_uri:
     db_uri = params['local_uri'] if local_server else params['prod_uri']
+if db_uri and db_uri.startswith('mysql://'):
+    db_uri = db_uri.replace('mysql://', 'mysql+pymysql://', 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
