@@ -1,9 +1,8 @@
-name: CI/CD Pipeline - Crime Prediction App
+name: Deploy to Amazon ECS - Crime Prediction App
 
 # ===================================================================
-# Trigger Configuration:
-# - Automatically triggers when commits are pushed to 'main'
-# - Also supports manual testing via the GitHub Actions UI tab
+# Triggers on code push to 'main'
+# Builds Docker image on GitHub runner, pushes to AWS ECR, and deploys to AWS ECS
 # ===================================================================
 on:
   push:
@@ -16,16 +15,24 @@ on:
       - 'docs/**'
   workflow_dispatch:
 
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: crime-prediction-app
+  ECS_CLUSTER: crime-app-cluster
+  ECS_SERVICE: crime-app-service
+  ECS_TASK_DEFINITION: task-definition.json
+  CONTAINER_NAME: crime-prediction-container
+
 jobs:
   # -----------------------------------------------------------------
-  # Stage 1: Continuous Integration (Test & Validate on GitHub Runner)
+  # Stage 1: Continuous Integration (Code Quality & Compilation)
   # -----------------------------------------------------------------
-  ci-build-and-test:
-    name: 1. CI - Validate Code & Build Image
+  ci-validate:
+    name: 1. CI - Validate Code & Dependencies
     runs-on: ubuntu-latest
 
     steps:
-      - name: 1. Checkout Code from GitHub
+      - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
       - name: 2. Set up Python 3.11
@@ -45,43 +52,59 @@ jobs:
           if [ -f "train_model.py" ]; then python -m py_compile train_model.py; fi
           echo "Python syntax validation passed successfully!"
 
-      - name: 5. Build Docker Image Locally in GitHub Runner
-        run: |
-          docker build -t crime-prediction-app:latest .
-          echo "Docker image built successfully! Containerization verified."
-
   # -----------------------------------------------------------------
-  # Stage 2: Continuous Deployment (SSH into AWS EC2 and Auto-Update)
+  # Stage 2: Build, Push to Amazon ECR & Deploy to Amazon ECS
   # -----------------------------------------------------------------
-  cd-deploy-to-ec2:
-    name: 2. CD - Auto-Deploy to AWS EC2
-    needs: ci-build-and-test
+  deploy-to-ecs:
+    name: 2. CD - Push to AWS ECR & Deploy to AWS ECS
+    needs: ci-validate
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Connect to EC2 via SSH and Deploy
-        uses: appleboy/ssh-action@v1.0.3
+      - name: 1. Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 2. Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            echo "=== Starting Automated Deployment on AWS EC2 ==="
-            cd /opt/app/crime_app/BE_PROJECT_GC14
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-            echo "1. Pulling latest code from GitHub..."
-            git pull origin main
+      - name: 3. Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-            echo "2. Rebuilding Docker image..."
-            docker build -t crime-prediction-app:latest .
+      - name: 4. Build, Tag, and Push Image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build Docker image
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-            echo "3. Restarting application container..."
-            docker stop crime-app || true
-            docker rm crime-app || true
-            docker run -d -p 5000:5000 --name crime-app --restart unless-stopped crime-prediction-app:latest
+          # Push both commit SHA tag and 'latest' tag to ECR
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-            echo "4. Cleaning up dangling images..."
-            docker image prune -f
+          # Output image URI for ECS task definition
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-            echo "=== Zero-Touch Deployment Succeeded! Application is Live ==="
+      - name: 5. Render New Image into Task Definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: 6. Deploy New Task Definition to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true

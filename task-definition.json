@@ -1,0 +1,40 @@
+{
+  "family": "crime-app-task",
+  "networkMode": "bridge",
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "cpu": "256",
+  "memory": "350",
+  "executionRoleArn": "arn:aws:iam::855409827410:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "crime-prediction-container",
+      "image": "855409827410.dkr.ecr.ap-south-1.amazonaws.com/crime-prediction-app:latest",
+      "essential": true,
+      "memoryReservation": 256,
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "hostPort": 5000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "PORT",
+          "value": "5000"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/crime-app-task",
+          "awslogs-region": "ap-south-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      }
+    }
+  ]
+}
