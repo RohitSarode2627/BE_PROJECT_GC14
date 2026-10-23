@@ -1,4 +1,10 @@
 # Crime Prediction System (BE_PROJECT_GC14)
+## Crime Prediction & Analytics Platform
+A Machine Learning-driven Flask application designed to analyze crime patterns and predict crime occurrences using Random Forest.
+### Quickstart
+- Run `pip install -r requirements.txt`
+- Train model: `python train_model.py`
+- Launch web app: `python app.py`
 
 A Machine Learning-powered Web Application for Crime Prediction and Analysis built with **Flask**, **Random Forest Classifier (Scikit-Learn)**, and **MySQL**.
 
