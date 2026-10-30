@@ -2,8 +2,8 @@
 	"params":
 	{
 		"local_server":"True",
-		"local_uri":"mysql+pymysql://root:root@localhost/crime",
-		"prod_uri":"mysql+pymysql://root:root@localhost/crime",
+		"local_uri":"mysql+pymysql://root:@localhost/crime",
+		"prod_uri":"mysql+pymysql://root:@localhost/crime",
 		"fb_url":"https://facebook.com/crime",
 		"tw_url":"https://twitter.com/crime",
 		"git_url":"https://github.com/crime",

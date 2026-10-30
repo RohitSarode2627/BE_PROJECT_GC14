@@ -1,9 +1,8 @@
-name: CI Pipeline - Crime Prediction App (No Cloud Required)
+name: Deploy to Amazon ECS - Crime Prediction App
 
 # ===================================================================
-# Trigger Configuration:
-# - Automatically triggers when commits are pushed to 'main'
-# - Also supports manual testing via the GitHub Actions UI tab
+# Triggers on code push to 'main'
+# Builds Docker image on GitHub runner, pushes to AWS ECR, and deploys to AWS ECS
 # ===================================================================
 on:
   push:
@@ -16,17 +15,24 @@ on:
       - 'docs/**'
   workflow_dispatch:
 
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: crime-prediction-app
+  ECS_CLUSTER: crime-app-cluster
+  ECS_SERVICE: crime-app-service
+  ECS_TASK_DEFINITION: task-definition.json
+  CONTAINER_NAME: crime-prediction-container
+
 jobs:
   # -----------------------------------------------------------------
-  # Continuous Integration (Runs entirely on GitHub-hosted runners for free)
-  # No AWS, no cloud subscription, and no credit card required.
+  # Stage 1: Continuous Integration (Code Quality & Compilation)
   # -----------------------------------------------------------------
-  ci-build-and-test:
-    name: Test Code & Build Docker Image
+  ci-validate:
+    name: 1. CI - Validate Code & Dependencies
     runs-on: ubuntu-latest
 
     steps:
-      - name: 1. Checkout Code from GitHub
+      - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
       - name: 2. Set up Python 3.11
@@ -42,46 +48,63 @@ jobs:
 
       - name: 4. Verify Code Syntax and Compilation
         run: |
-          python -m py_compile app.py train_model.py
+          python -m py_compile app.py
+          if [ -f "train_model.py" ]; then python -m py_compile train_model.py; fi
           echo "Python syntax validation passed successfully!"
 
-      - name: 5. Build Docker Image Locally in GitHub Runner
-        run: |
-          docker build -t crime-prediction-app:latest .
-          echo "Docker image built successfully! Containerization verified."
-
-      - name: 6. Test Running the Container
-        run: |
-          # Start container in detached mode
-          docker run -d -p 5000:5000 --name test-container crime-prediction-app:latest
-          
-          # Allow 5 seconds for Flask to initialize
-          sleep 5
-          
-          # Verify container is alive and listening
-          docker ps
-          
-          # Clean up test container
-          docker stop test-container
-          docker rm test-container
-          echo "Container startup test passed successfully!"
-
   # -----------------------------------------------------------------
-  # OPTIONAL FUTURE STAGE: Deploy to AWS EC2
-  # When you are ready to use AWS in the future, uncomment this job.
+  # Stage 2: Build, Push to Amazon ECR & Deploy to Amazon ECS
   # -----------------------------------------------------------------
-  # cd-deploy-to-ec2:
-  #   name: CD - Deploy Container to AWS EC2
-  #   needs: ci-build-and-test
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   steps:
-  #     - name: SSH into EC2 and Deploy
-  #       uses: appleboy/ssh-action@v1.0.3
-  #       with:
-  #         host: ${{ secrets.EC2_HOST }}
-  #         username: ${{ secrets.EC2_USER }}
-  #         key: ${{ secrets.EC2_SSH_KEY }}
-  #         script: |
-  #           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/crime-prediction-app:latest
-  #           sudo docker run -d -p 5000:5000 crime-prediction-app:latest
+  deploy-to-ecs:
+    name: 2. CD - Push to AWS ECR & Deploy to AWS ECS
+    needs: ci-validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 1. Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 2. Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 3. Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: 4. Build, Tag, and Push Image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build Docker image
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+          # Push both commit SHA tag and 'latest' tag to ECR
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+          # Output image URI for ECS task definition
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: 5. Render New Image into Task Definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: 6. Deploy New Task Definition to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
